@@ -1,5 +1,5 @@
 {
-  "FilePath": "h:\\CSharp\\Udemy\\FullStackAngular\\PromoWebService\\PromoWebService.csproj",
+  "FilePath": "c:\\Angular\\PromoWebService\\PromoWebService.csproj",
   "Configuration": {
     "ConfigurationName": "MVC-3.0",
     "LanguageVersion": "3.0",
@@ -14387,7 +14387,7 @@
         }
       }
     ],
-    "CSharpLanguageVersion": 800
+    "CSharpLanguageVersion": 900
   },
   "RootNamespace": "PromoWebService",
   "Documents": [],
