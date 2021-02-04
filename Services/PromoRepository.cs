@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ArticoliWebService.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Models;
 using PromoWebService.Models;
 
 namespace PromoWebService.Services
@@ -147,10 +148,10 @@ namespace PromoWebService.Services
                 .FirstOrDefault();
         }
 
-        public async Task<ICollection<DettPromo>> SelPromoActive()
+          public async Task<ICollection<DettPromo>> SelPromoActive()
         {
             //string Sql = $"SELECT * FROM DETTPROMO WHERE GETDATE() BETWEEN INIZIO AND FINE;";
-
+                      
             return await this.alphaShopDbContext
             .DettPromo
             .Where(a => a.Inizio <= DateTime.Today // Da Data
@@ -158,6 +159,17 @@ namespace PromoWebService.Services
             //.FromSqlRaw(Sql)
             .ToListAsync();
             
+        }
+
+        //Usa la stored procedure
+        public async Task<ICollection<VwDettPromo>> SelPromoActive1()
+          {
+    
+            string Sql = $"EXEC Sp_SelPromoActive";
+            return await this.alphaShopDbContext
+            .TipoPromo2
+            .FromSqlRaw(Sql)
+            .ToListAsync();
         }
     }
 }

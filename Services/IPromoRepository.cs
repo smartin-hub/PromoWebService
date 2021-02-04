@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Models;
 using PromoWebService.Models;
 
 namespace PromoWebService.Services
@@ -12,6 +13,7 @@ namespace PromoWebService.Services
         decimal SelPrzPromo(string CodArt);
         Task<decimal> SelPrzPromoSql(string CodArt);
         Task<ICollection<DettPromo>> SelPromoActive();
+        Task<ICollection<VwDettPromo>> SelPromoActive1();
 
         Task<bool> PromoExists(string IdPromo);
         bool InsPromo(Promo promozione);

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Models;
 using PromoWebService.Models;
 
 namespace ArticoliWebService.Services
@@ -15,6 +16,7 @@ namespace ArticoliWebService.Services
         public virtual DbSet<DettPromo> DettPromo {get; set; }
         public virtual DbSet<DepRifPromo> DepRifPromo { get; set; }
         public virtual DbSet<TipoPromo> TipoPromo { get; set; }
+        public virtual DbSet<VwDettPromo> TipoPromo2 { get; set; }
         
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
@@ -37,6 +39,10 @@ namespace ArticoliWebService.Services
                 .HasOne<TipoPromo>(s => s.tipoPromo)
                 .WithMany(g => g.dettPromo)
                 .HasForeignKey(s => s.IdTipoPromo);
+
+            //dobbiamo dirgli che non ha la chiave primaria (la nostra stored non ce l'ha)
+            //altrimenti avremo un errore
+            modelBuilder.Entity<VwDettPromo>().HasNoKey();
 
         }
 

@@ -126,6 +126,7 @@ namespace PromoWebService.Controllers
             return Ok(await this.promoRepository.SelPrzPromoSql(CodArt));
         }
 
+
         [HttpGet("active")]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -153,12 +154,60 @@ namespace PromoWebService.Controllers
                 {
                     artPromoDto.Add(new ArtPromoDto
                     {
+                        
                         Id = dettpromo.Id,
                         CodArt = dettpromo.CodArt,
                         Descrizione = (articoloDTO == null) ? "" : articoloDTO.Descrizione.Trim(),
                         Prezzo = articoloDTO.Prezzo,
                         Fine = dettpromo.Fine,
                         TipoPromo = dettpromo.IdTipoPromo,
+                        Oggetto = dettpromo.Oggetto,
+                        IsFid = dettpromo.IsFid
+                    });
+                }
+                else
+                    return BadRequest(new ErrMsg("Impossibile accedere al servizio Articoli", "400"));
+                
+            }
+            
+
+            return Ok(artPromoDto);
+        }
+
+        [HttpGet("active1")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200, Type = typeof(PromoDto))]
+        public async Task<IActionResult> GetPromoActive1()
+        {
+            string accessToken = Request.Headers["Authorization"];
+
+            //IdList = (IdList == null) ? this.priceWebApi.Listino : IdList;
+
+            var promo = await this.promoRepository.SelPromoActive1();
+
+            if (promo.Count == 0)
+            {
+                return NotFound(new InfoMsg(DateTime.Today, $"Non è stata trovata alcuna Promo attiva!"));
+            }
+
+            var artPromoDto = new List<ArtPromoDto>();
+            
+            foreach(var dettpromo in promo)
+            {
+                ArticoliDto articoloDTO = await getArtAsync(dettpromo.CodArt, this.artWebApi.Listino, accessToken);
+
+                if (articoloDTO != null)
+                {
+                    artPromoDto.Add(new ArtPromoDto
+                    {
+                        //se si usa la stored non si può usare perchè la stored non tira su l'id
+                        //Id = dettpromo.Id,
+                        CodArt = dettpromo.CodArt,
+                        Descrizione = (articoloDTO == null) ? "" : articoloDTO.Descrizione.Trim(),
+                        Prezzo = articoloDTO.Prezzo,
+                        Fine = dettpromo.Fine,
+                        TipoPromo = dettpromo.TipoPromo,
                         Oggetto = dettpromo.Oggetto,
                         IsFid = dettpromo.IsFid
                     });
